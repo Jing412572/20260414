@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>期中報告 - 我的程式種子</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* 隱藏卷軸，讓畫面保持全螢幕 */
+        background-color: #0f1923;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1; /* 讓 p5 畫布永遠在最底層當背景 */
+      }
+      #info-panel {
+        position: absolute;
+        left: 30px;
+        bottom: 40px;
+        width: 320px;
+        background: rgba(20, 30, 45, 0.85); /* 半透明深色背景 */
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid rgba(80, 200, 120, 0.5); /* 搭配藤蔓的綠色邊框 */
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.6);
+        color: #eee;
+        pointer-events: none; /* 重要：讓滑鼠點擊可以穿透文字面板，觸發後方的 p5 種子節點 */
+        transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* 添加平滑滑動的動畫 */
+      }
+      #info-panel h1 {
+        margin-top: 0;
+        font-size: 1.6rem;
+        color: #96f596; /* 螢光綠標題 */
+      }
+      #info-panel p {
+        line-height: 1.6;
+        font-size: 0.95rem;
+        margin-bottom: 0;
+      }
+      .highlight {
+        color: #ff9664; /* 橘色高亮關鍵字 */
+        font-weight: bold;
+      }
+      #toggle-btn {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        background: rgba(20, 30, 45, 0.5);
+        border: 1px solid rgba(80, 200, 120, 0.5);
+        color: #96f596;
+        border-radius: 6px;
+        padding: 4px 8px;
+        cursor: pointer;
+        pointer-events: auto; /* 重要：讓按鈕恢復可點擊狀態 */
+        font-size: 0.85rem;
+        transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* 與面板的動畫時間保持一致 */
+      }
+      #toggle-btn:hover {
+        background: rgba(80, 200, 120, 0.5);
+        color: #fff;
+      }
+      
+      /* 面板收起時的狀態：整個面板往左移出螢幕 */
+      #info-panel.collapsed {
+        transform: translateX(-400px); 
+      }
+      /* 讓按鈕反向平移，使其在面板滑走時依然留在畫面上 */
+      #info-panel.collapsed #toggle-btn {
+        transform: translateX(400px); 
+        background: rgba(20, 30, 45, 0.95); /* 稍微加深按鈕背景，看起來像獨立的標籤 */
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+      }
+    </style>
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <!-- p5.js 的畫布會被放置在這個容器中 -->
+    <div id="canvas-container"></div>
+
+    <!-- 心得與設計理念說明區塊 -->
+    <div id="info-panel">
+      <button id="toggle-btn">隱藏說明</button>
+      <h1>我的程式種子 🌱</h1>
+      <p>
+        <strong>設計理念：</strong><br>
+        本作品以「生長的脈絡」為主題，象徵學習歷程的向下扎根與向上發芽。
+        <br><br>
+        <strong>技術應用：</strong><br>
+        - <span class="highlight">Vertex & For</span>：繪製波浪狀的藤蔓作為時間軸。<br>
+        - <span class="highlight">Class 物件</span>：將每週作業封裝成可互動的種子節點，加入滑鼠懸停的開花效果。<br>
+        - <span class="highlight">Iframe 整合</span>：點擊節點即可在右側無縫切換，直接預覽各週的 HTML 檔案成果。
+      </p>
+    </div>
+
+    <!-- 控制按鈕隱藏/顯示的腳本 -->
+    <script>
+      const toggleBtn = document.getElementById('toggle-btn');
+      const infoPanel = document.getElementById('info-panel');
+      
+      toggleBtn.addEventListener('click', () => {
+        // 切換 collapsed 類別
+        infoPanel.classList.toggle('collapsed');
+        // 根據狀態更新按鈕文字
+        toggleBtn.innerText = infoPanel.classList.contains('collapsed') ? '顯示說明' : '隱藏說明';
+      });
+    </script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
